@@ -19,6 +19,16 @@ sf::FloatRect SnakeNode::getLocalBounds() const
 	return shape_.getLocalBounds();
 }
 
+sf::Vector2f SnakeNode::getPosition() const
+{
+	return shape_.getPosition();
+}
+
+void SnakeNode::setPosition(const sf::Vector2f& position)
+{
+	shape_.setPosition(position);
+}
+
 void SnakeNode::move(const sf::Vector2f& offset)
 {
 	shape_.move(offset);

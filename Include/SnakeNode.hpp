@@ -10,6 +10,9 @@ public:
 	sf::FloatRect getLocalBounds() const;
 	sf::FloatRect getGlobalBounds() const;
 
+	sf::Vector2f getPosition() const;
+	void setPosition(const sf::Vector2f& position);
+
 	void move(const sf::Vector2f& offset);
 	void render(sf::RenderWindow& window);
 
