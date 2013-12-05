@@ -13,8 +13,7 @@ public:
 	void move(const sf::Vector2f& offset);
 	void render(sf::RenderWindow& window);
 
+	static const float Size;
 private:
-	const float Size;
-
 	sf::RectangleShape shape_;
 };

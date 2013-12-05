@@ -1,8 +1,9 @@
 #include "../Include/SnakeNode.hpp"
 
+const float SnakeNode::Size = 10.f;
+
 SnakeNode::SnakeNode(const sf::Vector2f& position)
-: Size(10.f)
-, shape_({ Size, Size })
+: shape_({ Size, Size })
 {
 	shape_.setPosition(position);
 	shape_.setFillColor(sf::Color::Green);
