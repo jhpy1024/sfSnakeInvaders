@@ -17,6 +17,9 @@ public:
 	void update(sf::Time delta);
 	void render();
 
+	int getWidth() const;
+	int getHeight() const;
+
 private:
 	const int Width;
 	const int Height;

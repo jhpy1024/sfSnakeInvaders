@@ -56,3 +56,13 @@ void Game::run()
 		render();
 	}
 }
+
+int Game::getWidth() const
+{
+	return Width;
+}
+
+int Game::getHeight() const
+{
+	return Height;
+}
