@@ -4,8 +4,9 @@ Game::Game()
 : Width(640)
 , Height(480)
 , Title("SnakeInvaders!")
-, TimePerFrame(sf::seconds(1.f / 60.f))
+, TimePerFrame(sf::seconds(1.f / 10.f))
 , window_(sf::VideoMode(Width, Height), Title, sf::Style::Close)
+, player_({ Width / 2.f, Height / 2.f }, this)
 {
 	
 }
@@ -19,17 +20,19 @@ void Game::handleInput()
 		if (event.type == sf::Event::Closed)
 			window_.close();
 	}
+
+	player_.handleInput();
 }
 
 void Game::update(sf::Time delta)
 {
-
+	player_.update(delta);
 }
 
 void Game::render()
 {
 	window_.clear();
-
+	player_.render(window_);
 	window_.display();
 }
 

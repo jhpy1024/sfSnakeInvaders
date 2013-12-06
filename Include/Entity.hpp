@@ -1,13 +1,14 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 #include <memory>
 
-#include "Game.hpp"
-
+class Game;
 class Entity
 {
 public:
-	Entity(const sf::Vector2f& position, std::shared_ptr<Game> game);
+	Entity(const sf::Vector2f& position, Game* game);
 
 	virtual void handleInput() = 0;
 	virtual void update(sf::Time delta) = 0;
@@ -21,7 +22,7 @@ public:
 	void move(const sf::Vector2f& offset);
 
 protected:
-	std::shared_ptr<Game> game_;
+	Game* game_;
 
 private:
 	sf::Sprite sprite_;

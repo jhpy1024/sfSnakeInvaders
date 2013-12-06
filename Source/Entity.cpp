@@ -1,6 +1,6 @@
 #include "../Include/Entity.hpp"
 
-Entity::Entity(const sf::Vector2f& position, std::shared_ptr<Game> game)
+Entity::Entity(const sf::Vector2f& position, Game* game)
 : game_(game)
 {
 	sprite_.setPosition(position);

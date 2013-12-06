@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include "Snake.hpp"
+
 class Game
 {
 public:
@@ -22,4 +24,6 @@ private:
 	const sf::Time TimePerFrame;
 
 	sf::RenderWindow window_;
+
+	Snake player_;
 };
