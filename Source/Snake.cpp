@@ -6,7 +6,7 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 , game_(game)
 , direction_(Direction::Up)
 , canShoot_(true)
-, FireRate(sf::seconds(0.5f))
+, FireRate(sf::seconds(0.25f))
 {
 	for (unsigned i = 0; i < initialSize; ++i)
 	{
