@@ -12,9 +12,6 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 	{
 		nodes_.push_back(SnakeNode({ position.x, position.y + SnakeNode::Size * i }));
 	}
-
-	bullets_.push_back(Bullet({ 10, 10 }, game, Bullet::Direction::Left));
-	bullets_.push_back(Bullet({ 100, 100 }, game, Bullet::Direction::Up));
 }
 
 void Snake::handleInput()
