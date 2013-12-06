@@ -1,5 +1,6 @@
 #include "../Include/Snake.hpp"
-#include <iostream>
+#include "../Include/Game.hpp"
+
 Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 : position_(position)
 , game_(game)
@@ -25,6 +26,7 @@ void Snake::handleInput()
 
 void Snake::update(sf::Time delta)
 {
+	checkEdgeCollisions();
 	move();
 }
 
@@ -32,6 +34,39 @@ void Snake::render(sf::RenderWindow& window)
 {
 	for (auto& node : nodes_)
 		node.render(window);
+}
+
+bool Snake::hitTop() const
+{
+	return nodes_[0].getPosition().y < 0;
+}
+
+bool Snake::hitBottom() const
+{
+	return nodes_[0].getPosition().y > game_->getHeight() - SnakeNode::Size;
+}
+
+bool Snake::hitLeft() const
+{
+	return nodes_[0].getPosition().x < 0;
+}
+
+bool Snake::hitRight() const
+{
+	return nodes_[0].getPosition().x > game_->getWidth() - SnakeNode::Size;
+}
+
+void Snake::checkEdgeCollisions()
+{
+	if (hitLeft())
+		nodes_[0].setPosition({ game_->getWidth() - SnakeNode::Size, nodes_[0].getPosition().y });
+	else if (hitRight())
+		nodes_[0].setPosition({ 0.f, nodes_[0].getPosition().y });
+
+	if (hitTop())
+		nodes_[0].setPosition({ nodes_[0].getPosition().x, game_->getHeight() - SnakeNode::Size });
+	else if (hitBottom())
+		nodes_[0].setPosition({ nodes_[0].getPosition().x, 0.f });
 }
 
 void Snake::move()

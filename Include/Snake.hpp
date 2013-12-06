@@ -17,6 +17,11 @@ public:
 private:
 	void grow();
 	void move();
+	void checkEdgeCollisions();
+	bool hitTop() const;
+	bool hitBottom() const;
+	bool hitLeft() const;
+	bool hitRight() const;
 
 private:
 	enum class Direction { Left, Right, Up, Down };
