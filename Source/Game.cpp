@@ -4,11 +4,11 @@ Game::Game()
 : Width(640)
 , Height(480)
 , Title("SnakeInvaders!")
-, TimePerFrame(sf::seconds(1.f / 10.f))
+, TimePerFrame(sf::seconds(1.f / 30.f))
 , window_(sf::VideoMode(Width, Height), Title, sf::Style::Close)
 , player_({ Width / 2.f, Height / 2.f }, this)
 {
-	
+	textures_.addTexture("bullets", "Assets/bullets.png");
 }
 
 void Game::handleInput()
@@ -65,4 +65,14 @@ int Game::getWidth() const
 int Game::getHeight() const
 {
 	return Height;
+}
+
+TextureHolder& Game::getTextureHolder()
+{
+	return textures_;
+}
+
+sf::Time Game::getFps() const
+{
+	return TimePerFrame;
 }

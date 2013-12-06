@@ -9,7 +9,7 @@ class Entity
 {
 public:
 	Entity(const sf::Vector2f& position, Game* game);
-
+	
 	virtual void handleInput() = 0;
 	virtual void update(sf::Time delta) = 0;
 	virtual void render(sf::RenderWindow& window) = 0;
@@ -23,7 +23,5 @@ public:
 
 protected:
 	Game* game_;
-
-private:
 	sf::Sprite sprite_;
 };

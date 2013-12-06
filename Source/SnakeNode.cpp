@@ -7,6 +7,8 @@ SnakeNode::SnakeNode(const sf::Vector2f& position)
 {
 	shape_.setPosition(position);
 	shape_.setFillColor(sf::Color::Green);
+	shape_.setOutlineColor(sf::Color::Red);
+	shape_.setOutlineThickness(1.f);
 }
 
 sf::FloatRect SnakeNode::getGlobalBounds() const

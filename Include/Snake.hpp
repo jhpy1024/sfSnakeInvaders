@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "SnakeNode.hpp"
+#include "Bullet.hpp"
 
 class Game;
 class Snake
@@ -16,8 +17,10 @@ public:
 
 private:
 	void grow();
-	void move();
+	void move(sf::Time delta);
 	void checkEdgeCollisions();
+	void fireBullet();
+
 	bool hitTop() const;
 	bool hitBottom() const;
 	bool hitLeft() const;
@@ -28,6 +31,15 @@ private:
 	Direction direction_;
 
 	sf::Vector2f position_;
+
 	std::vector<SnakeNode> nodes_;
+	std::vector<Bullet> bullets_;
+	std::vector<std::vector<Bullet>::iterator> bulletsToErase_;
+		
+	bool canShoot_;
+	sf::Clock fireClock_;
+	sf::Time lastFireTime_;
+	const sf::Time FireRate;
+
 	Game* game_;
 };
