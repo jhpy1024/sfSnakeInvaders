@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 
 #include <string>
+#include <memory>
+#include <vector>
 
 #include "Snake.hpp"
 #include "TextureHolder.hpp"
@@ -30,6 +32,8 @@ private:
 	const int Height;
 	const std::string Title;
 	const sf::Time TimePerFrame;
+
+	std::vector<std::unique_ptr<Entity>> spaceships_;
 
 	sf::RenderWindow window_;
 

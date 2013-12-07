@@ -1,4 +1,5 @@
 #include "../Include/Game.hpp"
+#include "../Include/Spaceship.hpp"
 
 Game::Game()
 : Width(640)
@@ -9,6 +10,10 @@ Game::Game()
 , player_({ Width / 2.f, Height / 2.f }, this)
 {
 	textures_.addTexture("bullets", "Assets/bullets.png");
+	textures_.addTexture("spaceship", "Assets/spaceship.png");
+
+	spaceships_.push_back(std::unique_ptr<Entity>(
+		new Spaceship({ 100, 100 }, this)));
 }
 
 void Game::handleInput()
@@ -27,12 +32,20 @@ void Game::handleInput()
 void Game::update(sf::Time delta)
 {
 	player_.update(delta);
+
+	for (auto& ship : spaceships_)
+		ship->update(delta);
 }
 
 void Game::render()
 {
 	window_.clear();
+
+	for (auto& ship : spaceships_)
+		ship->render(window_);
+
 	player_.render(window_);
+
 	window_.display();
 }
 
