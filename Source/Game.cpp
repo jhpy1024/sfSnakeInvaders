@@ -6,6 +6,8 @@ Game::Game()
 , Height(480)
 , Title("SnakeInvaders!")
 , TimePerFrame(sf::seconds(1.f / 30.f))
+, NumShipRows(3)
+, NumShipColumns(5)
 , window_(sf::VideoMode(Width, Height), Title, sf::Style::Close)
 , player_({ Width / 2.f, Height / 2.f }, this)
 {
@@ -18,12 +20,12 @@ Game::Game()
 	bgSprite_.setPosition(0.f, 0.f);
 	bgSprite_.setTextureRect(sf::IntRect(0, 0, Width, Height));
 
-	for (int i = 0; i < 6; ++i)
+	for (unsigned x = 0; x < NumShipColumns; ++x)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (unsigned y = 0; y < NumShipRows; ++y)
 		{
 			spaceships_.push_back(std::unique_ptr<Entity>(
-				new Spaceship({ (72.f + 30.f) * i, (32.f + 10.f) * j }, this)));
+				new Spaceship({ (72.f + 30.f) * x, (32.f + 10.f) * y }, this)));
 		}
 	}
 

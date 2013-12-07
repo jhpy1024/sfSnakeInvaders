@@ -33,6 +33,8 @@ private:
 	const std::string Title;
 	const sf::Time TimePerFrame;
 
+	const unsigned NumShipRows;
+	const unsigned NumShipColumns;
 	std::vector<std::unique_ptr<Entity>> spaceships_;
 
 	sf::RenderWindow window_;
