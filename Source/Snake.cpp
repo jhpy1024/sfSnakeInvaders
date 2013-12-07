@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "../Include/Snake.hpp"
 #include "../Include/Game.hpp"
 
@@ -8,6 +10,9 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 , canShoot_(true)
 , FireRate(sf::seconds(0.25f))
 {
+	// The initial size should never be zero.
+	assert(initialSize != 0);
+
 	for (unsigned i = 0; i < initialSize; ++i)
 	{
 		nodes_.push_back(SnakeNode({ position.x, position.y + SnakeNode::Size * i }));

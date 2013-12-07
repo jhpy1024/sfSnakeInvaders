@@ -16,7 +16,8 @@ public:
 	bool outOfBounds() const;
 
 private:
-	float Speed;
+	float speed_;
+	float acceleration_;
 
 	Direction direction_;
 

@@ -3,7 +3,8 @@
 
 Bullet::Bullet(const sf::Vector2f& position, Game* game, Direction direction)
 : Entity(position, game)
-, Speed(300.f)
+, speed_(300.f)
+, acceleration_(1.1f)
 , direction_(direction)
 , outOfBounds_(false)
 {
@@ -29,23 +30,23 @@ void Bullet::handleInput()
 
 void Bullet::update(sf::Time delta)
 {
-	Speed *= 1.05f;
+	speed_ *= acceleration_;
 
 	if (!outOfBounds())
 	{
 		switch (direction_)
 		{
 		case Direction::Left:
-			sprite_.move(-Speed * delta.asSeconds(), 0.f);
+			sprite_.move(-speed_ * delta.asSeconds(), 0.f);
 			break;
 		case Direction::Right:
-			sprite_.move(Speed * delta.asSeconds(), 0.f);
+			sprite_.move(speed_ * delta.asSeconds(), 0.f);
 			break;
 		case Direction::Up:
-			sprite_.move(0.f, -Speed * delta.asSeconds());
+			sprite_.move(0.f, -speed_ * delta.asSeconds());
 			break;
 		case Direction::Down:
-			sprite_.move(0.f, Speed * delta.asSeconds());
+			sprite_.move(0.f, speed_ * delta.asSeconds());
 			break;
 		}
 	}
