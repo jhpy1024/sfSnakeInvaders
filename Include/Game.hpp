@@ -36,6 +36,7 @@ private:
 	std::vector<std::unique_ptr<Entity>> spaceships_;
 
 	sf::RenderWindow window_;
+	sf::Sprite bgSprite_;
 
 	TextureHolder textures_;
 

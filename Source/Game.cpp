@@ -11,6 +11,12 @@ Game::Game()
 {
 	textures_.addTexture("bullets", "Assets/bullets.png");
 	textures_.addTexture("spaceship", "Assets/spaceship.png");
+	textures_.addTexture("background", "Assets/stars.png");
+
+	textures_.getTexture("background").setRepeated(true);
+	bgSprite_.setTexture(textures_.getTexture("background"));
+	bgSprite_.setPosition(0.f, 0.f);
+	bgSprite_.setTextureRect(sf::IntRect(0, 0, Width, Height));
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -47,6 +53,7 @@ void Game::update(sf::Time delta)
 void Game::render()
 {
 	window_.clear();
+	window_.draw(bgSprite_);
 
 	for (auto& ship : spaceships_)
 		ship->render(window_);
