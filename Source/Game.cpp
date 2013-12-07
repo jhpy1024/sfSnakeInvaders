@@ -12,8 +12,15 @@ Game::Game()
 	textures_.addTexture("bullets", "Assets/bullets.png");
 	textures_.addTexture("spaceship", "Assets/spaceship.png");
 
-	spaceships_.push_back(std::unique_ptr<Entity>(
-		new Spaceship({ 100, 100 }, this)));
+	for (int i = 0; i < 6; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			spaceships_.push_back(std::unique_ptr<Entity>(
+				new Spaceship({ (72.f + 30.f) * i, (32.f + 10.f) * j }, this)));
+		}
+	}
+
 }
 
 void Game::handleInput()

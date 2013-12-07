@@ -1,12 +1,14 @@
+#include <ctime>
+
 #include "../Include/Spaceship.hpp"
 #include "../Include/Game.hpp"
 
 Spaceship::Spaceship(const sf::Vector2f& position, Game* game)
 : Entity(position, game)
-, NumFrames(7)
-, Width(72)
-, Height(32)
-, AnimationDelay(sf::seconds(0.01f))
+, NumFrames(12)
+, Width(58)
+, Height(34)
+, AnimationDelay(sf::milliseconds(5))
 , currentFrame_(0)
 {
 	sprite_.setTexture(game_->getTextureHolder().getTexture("spaceship"));
