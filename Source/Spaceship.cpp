@@ -73,7 +73,7 @@ void Spaceship::update(sf::Time delta)
 
 bool Spaceship::shouldShoot() const
 {
-	return (rand() % 2 == 0);
+	return (rand() % 100) < 5;
 }
 
 sf::IntRect Spaceship::randomBulletColor() const
