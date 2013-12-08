@@ -3,11 +3,12 @@
 #include "../Include/Spaceship.hpp"
 #include "../Include/Game.hpp"
 
+const int Spaceship::Width = 58;
+const int Spaceship::Height = 34;
+
 Spaceship::Spaceship(const sf::Vector2f& position, Game* game)
 : Entity(position, game)
 , NumFrames(12)
-, Width(58)
-, Height(34)
 , AnimationDelay(sf::milliseconds(5))
 , currentFrame_(0)
 {

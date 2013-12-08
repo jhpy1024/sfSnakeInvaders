@@ -40,6 +40,8 @@ private:
 	const int RightShipPadding;
 	const int TopShipPadding;
 	const int BottomShipPadding;
+	const int ShipHorizontalSpacing;
+	const int ShipVerticalSpacing;
 	std::vector<std::unique_ptr<Entity>> spaceships_;
 	int shipHorizontalDirection_;
 	int shipVerticalDirection_;

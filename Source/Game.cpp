@@ -13,6 +13,8 @@ Game::Game()
 , RightShipPadding(500)
 , TopShipPadding(10)
 , BottomShipPadding(Height / 2)
+, ShipHorizontalSpacing(30)
+, ShipVerticalSpacing(10)
 , shipHorizontalDirection_(1) // 1 == right, -1 == left
 , shipVerticalDirection_(1) // 1 == down, -1 == up
 , shipsMoveVertical_(false)
@@ -33,7 +35,8 @@ Game::Game()
 		for (unsigned x = 1; x < NumShipColumns + 1; ++x)
 		{
 			spaceships_.push_back(std::unique_ptr<Entity>(
-				new Spaceship({ (72.f + 30.f) * x, (32.f + 10.f) * y }, this)));
+				new Spaceship({ static_cast<float>((Spaceship::Width + ShipHorizontalSpacing) * x),
+				static_cast<float>((Spaceship::Height + ShipVerticalSpacing) * y) }, this)));
 		}
 	}
 
