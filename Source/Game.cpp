@@ -56,26 +56,37 @@ void Game::update(sf::Time delta)
 {
 	player_.update(delta);
 
+	// If the rightmost ship is near the right edge of the screen, flip the direction
+	// of the ships and move them down.
 	if (spaceships_[NumShipColumns]->getPosition().x >= Width - RightShipPadding)
 	{
 		shipHorizontalDirection_ = -1;
 		shipsMoveVertical_ = true;
 	}
+
+	// If the leftmost ship is near the left edge of the screen, flip the direction
+	// of the ships and move them down.
 	else if (spaceships_[0]->getPosition().x <= LeftShipPadding)
 	{
 		shipHorizontalDirection_ = 1;
 		shipsMoveVertical_ = true;
 	}
+
+	// The ships aren't at an edge, don't move down.
 	else
 	{
 		shipsMoveVertical_ = false;
 	}
 
+	// If the bottommost ship is at the center of the screen, start moving
+	// back upwards.
 	if (spaceships_[NumShipColumns * NumShipRows - 1]->getPosition().y >= BottomShipPadding)
 	{
 		shipsMoveVertical_ = true;
 		shipVerticalDirection_ = -1;
 	}
+
+	// If the topmost ship is near the top of the screen, start moving downwards.
 	else if (spaceships_[0]->getPosition().y <= TopShipPadding)
 	{
 		shipsMoveVertical_ = true;
@@ -84,7 +95,8 @@ void Game::update(sf::Time delta)
 
 	for (auto& ship : spaceships_)
 	{
-		ship->move({ ShipSpeed * shipHorizontalDirection_ * delta.asSeconds(), (shipsMoveVertical_ ? ShipSpeed * shipVerticalDirection_ * delta.asSeconds() : 0.f) });
+		ship->move({ ShipSpeed * shipHorizontalDirection_ * delta.asSeconds(),
+			(shipsMoveVertical_ ? ShipSpeed * shipVerticalDirection_ * delta.asSeconds() : 0.f) });
 		ship->update(delta);
 	}
 }
