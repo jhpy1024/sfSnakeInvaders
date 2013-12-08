@@ -1,14 +1,14 @@
 #include "../Include/Bullet.hpp"
 #include "../Include/Game.hpp"
 
-Bullet::Bullet(const sf::Vector2f& position, Game* game, Direction direction)
+Bullet::Bullet(const sf::Vector2f& position, Game* game, Direction direction, const std::string& textureId)
 : Entity(position, game)
 , speed_(300.f)
 , acceleration_(1.1f)
 , direction_(direction)
 , outOfBounds_(false)
 {
-	sprite_.setTexture(game_->getTextureHolder().getTexture("bullets"));
+	sprite_.setTexture(game_->getTextureHolder().getTexture(textureId));
 
 	switch (direction)
 	{
@@ -21,6 +21,11 @@ Bullet::Bullet(const sf::Vector2f& position, Game* game, Direction direction)
 		sprite_.setTextureRect(sf::IntRect(30, 0, 12, 30));
 		break;
 	}
+}
+
+void Bullet::setTextureRect(const sf::IntRect& rect)
+{
+	sprite_.setTextureRect(rect);
 }
 
 void Bullet::handleInput()

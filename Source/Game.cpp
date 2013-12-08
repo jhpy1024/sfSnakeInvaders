@@ -24,6 +24,7 @@ Game::Game()
 	textures_.addTexture("bullets", "Assets/bullets.png");
 	textures_.addTexture("spaceship", "Assets/spaceship.png");
 	textures_.addTexture("background", "Assets/stars.png");
+	textures_.addTexture("enemyBullets", "Assets/enemyBullets.png");
 
 	textures_.getTexture("background").setRepeated(true);
 	bgSprite_.setTexture(textures_.getTexture("background"));
