@@ -60,6 +60,11 @@ void Game::update(sf::Time delta)
 {
 	player_.update(delta);
 
+	updateShips(delta);
+}
+
+void Game::updateShips(sf::Time delta)
+{
 	// If the rightmost ship is near the right edge of the screen, flip the direction
 	// of the ships and move them down.
 	if (spaceships_[NumShipColumns]->getPosition().x >= Width - RightShipPadding)

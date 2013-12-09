@@ -28,6 +28,9 @@ public:
 	TextureHolder& getTextureHolder();
 
 private:
+	void updateShips(sf::Time delta);
+
+private:
 	const int Width;
 	const int Height;
 	const std::string Title;
