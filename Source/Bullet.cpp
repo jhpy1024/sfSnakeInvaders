@@ -1,8 +1,9 @@
 #include "../Include/Bullet.hpp"
 #include "../Include/Game.hpp"
 
-Bullet::Bullet(const sf::Vector2f& position, Game* game, Direction direction, const std::string& textureId)
-: Entity(position, game)
+Bullet::Bullet(const sf::Vector2f& position, Game* game, Direction direction,
+	EntityType type, const std::string& textureId)
+: Entity(position, game, type)
 , speed_(300.f)
 , acceleration_(1.1f)
 , direction_(direction)

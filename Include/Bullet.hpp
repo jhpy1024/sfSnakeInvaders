@@ -9,7 +9,8 @@ class Bullet : public Entity
 public:
 	enum class Direction { Left, Right, Down, Up };
 
-	Bullet(const sf::Vector2f& position, Game* game, Direction direction, const std::string& textureId = "bullets");
+	Bullet(const sf::Vector2f& position, Game* game, Direction direction, 
+		EntityType type, const std::string& textureId = "bullets");
 
 	void handleInput() override;
 	void update(sf::Time delta) override;

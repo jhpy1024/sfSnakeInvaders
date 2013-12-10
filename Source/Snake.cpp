@@ -55,7 +55,7 @@ void Snake::fireBullet()
 			break;
 		}
 	
-		bullets_.push_back(Bullet(nodes_[0].getPosition(), game_, bulletDirection));
+		bullets_.push_back(Bullet(nodes_[0].getPosition(), game_, bulletDirection, EntityType::SnakeBullet));
 		lastFireTime_ = fireClock_.getElapsedTime();
 	}
 }

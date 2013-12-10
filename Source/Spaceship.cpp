@@ -9,7 +9,7 @@ const int Spaceship::Height = 34;
 bool Spaceship::engineSeeded_ = false;
 
 Spaceship::Spaceship(const sf::Vector2f& position, Game* game)
-: Entity(position, game)
+: Entity(position, game, EntityType::Spaceship)
 , NumFrames(12)
 , AnimationDelay(sf::milliseconds(5))
 , currentFrame_(0)
@@ -93,7 +93,7 @@ sf::IntRect Spaceship::randomBulletColor() const
 void Spaceship::fireBullet()
 {
 	bullets_.push_back(Bullet({sprite_.getPosition().x + Width / 2.f, sprite_.getPosition().y + Height},
-		game_, Bullet::Direction::Down, "enemyBullets"));
+		game_, Bullet::Direction::Down, EntityType::ShipBullet, "enemyBullets"));
 	bullets_.back().setTextureRect(randomBulletColor());
 	lastFireTime_ = fireClock_.getElapsedTime();
 	sprite_.setTextureRect(sf::IntRect(sprite_.getTextureRect().left, Height, Width, Height));
