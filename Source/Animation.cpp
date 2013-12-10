@@ -12,6 +12,7 @@ Animation::Animation(const std::string& textureName, const sf::Time& delay, unsi
 , game_(game)
 {
 	sprite_.setTexture(game->getTextureHolder().getTexture(textureName));
+	sprite_.setTextureRect(sf::IntRect(0, 0, frameSize.x, frameSize.y));
 }
 
 void Animation::update()
@@ -20,13 +21,13 @@ void Animation::update()
 	if (clock_.getElapsedTime() >= delay_)
 	{
 		// If we are at the end column
-		if (horizontalPos_ == numHorizontalFrames_)
+		if (horizontalPos_ == numHorizontalFrames_ - 1)
 		{
 			horizontalPos_ = 0;
 			++verticalPos_;
 
 			// If we are on the bottom row
-			if (verticalPos_ == numVerticalFrames_)
+			if (verticalPos_ == numVerticalFrames_ - 1)
 			{
 				// If repeated, reset the positions to (0, 0)
 				if (repeated_)
