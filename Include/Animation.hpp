@@ -37,6 +37,7 @@ private:
 	unsigned horizontalPos_;
 	unsigned verticalPos_;
 
+	bool finished_;
 	bool repeated_;
 
 	Game* game_;

@@ -34,6 +34,10 @@ void Animation::update()
 					horizontalPos_ = 0;
 					verticalPos_ = 0;
 				}
+				else
+				{
+					finished_ = true;
+				}
 			}
 		}
 
@@ -54,7 +58,7 @@ void Animation::render(sf::RenderWindow& window)
 
 bool Animation::isFinished() const
 {
-	return (!repeated_) && (horizontalPos_ == numHorizontalFrames_) && (verticalPos_ == numVerticalFrames_);
+	return finished_;
 }
 
 void Animation::setFrameSize(const sf::Vector2f& frameSize)
