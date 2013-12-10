@@ -19,7 +19,7 @@ private:
 	void grow();
 	void move(sf::Time delta);
 	void checkEdgeCollisions();
-	void checkBulletCollisions(std::vector<Bullet>::iterator bullet);
+	void checkBulletCollisions(std::vector<Bullet>::size_type bullet);
 	void fireBullet();
 
 	bool hitTop() const;
@@ -35,7 +35,7 @@ private:
 
 	std::vector<SnakeNode> nodes_;
 	std::vector<Bullet> bullets_;
-	std::vector<std::vector<Bullet>::iterator> bulletsToErase_;
+	std::vector<std::vector<Bullet>::size_type> bulletsToErase_;
 		
 	bool canShoot_;
 	sf::Clock fireClock_;

@@ -67,16 +67,16 @@ void Snake::update(sf::Time delta)
 	for (auto it = bullets_.begin(); it != bullets_.end(); ++it)
 	{
 		if (it->outOfBounds())
-			bulletsToErase_.push_back(it);
+			bulletsToErase_.push_back(std::distance(bullets_.begin(), it));
 
-		checkBulletCollisions(it);
+		checkBulletCollisions(std::distance(bullets_.begin(), it));
 		it->update(delta);
 	}
 
 	for (auto& it: bulletsToErase_)
 	{
-		if (it != bullets_.end())
-			bullets_.erase(it);
+		if (it != bullets_.size())
+			bullets_.erase(bullets_.begin() + it);
 	}
 	bulletsToErase_.clear();
 
@@ -94,11 +94,11 @@ void Snake::render(sf::RenderWindow& window)
 		node.render(window);
 }
 
-void Snake::checkBulletCollisions(std::vector<Bullet>::iterator bullet)
+void Snake::checkBulletCollisions(std::vector<Bullet>::size_type bullet)
 {
 	for (auto& spaceship : game_->getSpaceships())
 	{
-		if (bullet->getGlobalBounds().intersects(spaceship->getGlobalBounds()))
+		if (bullets_[bullet].getGlobalBounds().intersects(spaceship->getGlobalBounds()))
 		{
 			static_cast<Spaceship*>(spaceship.get())->hitByPlayerBullet();
 			bulletsToErase_.push_back(bullet);
