@@ -2,11 +2,11 @@
 
 const float SnakeNode::Size = 10.f;
 
-SnakeNode::SnakeNode(const sf::Vector2f& position)
+SnakeNode::SnakeNode(const sf::Vector2f& position, bool head)
 : shape_({ Size, Size })
 {
 	shape_.setPosition(position);
-	shape_.setFillColor(sf::Color::Green);
+	shape_.setFillColor((head ? sf::Color::Red : sf::Color::Green));
 }
 
 sf::FloatRect SnakeNode::getGlobalBounds() const

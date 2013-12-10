@@ -5,7 +5,7 @@
 class SnakeNode
 {
 public:
-	SnakeNode(const sf::Vector2f& position);
+	SnakeNode(const sf::Vector2f& position, bool head = false);
 
 	sf::FloatRect getLocalBounds() const;
 	sf::FloatRect getGlobalBounds() const;

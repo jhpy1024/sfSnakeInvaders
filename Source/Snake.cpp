@@ -18,7 +18,7 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 
 	for (unsigned i = 0; i < initialSize; ++i)
 	{
-		nodes_.push_back(SnakeNode({ position.x, position.y + SnakeNode::Size * i }));
+		nodes_.push_back(SnakeNode({ position.x, position.y + SnakeNode::Size * i }, (i == 0 ? true : false)));
 	}
 }
 
