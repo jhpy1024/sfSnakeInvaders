@@ -17,6 +17,8 @@ public:
 
 	static const int Width;
 	static const int Height;
+
+	void hitByPlayerBullet();
 	
 private:
 	void fireBullet();

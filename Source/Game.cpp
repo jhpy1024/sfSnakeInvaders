@@ -123,6 +123,11 @@ void Game::render()
 	window_.display();
 }
 
+std::vector<std::unique_ptr<Entity>>& Game::getSpaceships()
+{
+	return spaceships_;
+}
+
 void Game::run()
 {
 	sf::Clock clock;

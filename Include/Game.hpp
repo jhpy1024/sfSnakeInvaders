@@ -22,8 +22,8 @@ public:
 
 	int getWidth() const;
 	int getHeight() const;
-
 	sf::Time getFps() const;
+	std::vector<std::unique_ptr<Entity>>& getSpaceships();
 
 	TextureHolder& getTextureHolder();
 

@@ -2,6 +2,7 @@
 
 #include "../Include/Snake.hpp"
 #include "../Include/Game.hpp"
+#include "../Include/Spaceship.hpp"
 
 Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 : Entity(position, game, EntityType::Snake)
@@ -68,6 +69,7 @@ void Snake::update(sf::Time delta)
 		if (it->outOfBounds())
 			bulletsToErase_.push_back(it);
 
+		checkBulletCollisions(it);
 		it->update(delta);
 	}
 
@@ -90,6 +92,18 @@ void Snake::render(sf::RenderWindow& window)
 		bullet.render(window);
 	for (auto& node : nodes_)
 		node.render(window);
+}
+
+void Snake::checkBulletCollisions(std::vector<Bullet>::iterator bullet)
+{
+	for (auto& spaceship : game_->getSpaceships())
+	{
+		if (bullet->getGlobalBounds().intersects(spaceship->getGlobalBounds()))
+		{
+			static_cast<Spaceship*>(spaceship.get())->hitByPlayerBullet();
+			bulletsToErase_.push_back(bullet);
+		}
+	}
 }
 
 bool Snake::hitTop() const

@@ -19,6 +19,7 @@ private:
 	void grow();
 	void move(sf::Time delta);
 	void checkEdgeCollisions();
+	void checkBulletCollisions(std::vector<Bullet>::iterator bullet);
 	void fireBullet();
 
 	bool hitTop() const;
