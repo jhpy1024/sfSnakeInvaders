@@ -35,6 +35,11 @@ Spaceship::Spaceship(const sf::Vector2f& position, Game* game)
 		fireRate_ = -fireRate_;
 }
 
+std::vector<Bullet>& Spaceship::getBullets()
+{
+	return bullets_;
+}
+
 void Spaceship::hitByPlayerBullet()
 {
 	std::cout << "Ship hit by enemy bullet" << std::endl;

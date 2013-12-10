@@ -15,6 +15,8 @@ public:
 	void update(sf::Time delta) override;
 	void render(sf::RenderWindow& window) override;
 
+	std::vector<Bullet>& getBullets();
+
 	static const int Width;
 	static const int Height;
 

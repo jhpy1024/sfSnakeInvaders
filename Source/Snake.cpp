@@ -1,4 +1,5 @@
 #include <cassert>
+#include <iostream>
 
 #include "../Include/Snake.hpp"
 #include "../Include/Game.hpp"
@@ -81,9 +82,30 @@ void Snake::update(sf::Time delta)
 	bulletsToErase_.clear();
 
 	checkEdgeCollisions();
+	checkEnemyBulletCollisions();
 	move(delta);
 
 	canShoot_ = fireClock_.getElapsedTime() - lastFireTime_ >= FireRate;
+}
+
+void Snake::checkEnemyBulletCollisions()
+{
+	for (auto& spaceship : game_->getSpaceships())
+	{
+		for (auto& bullet : static_cast<Spaceship*>(spaceship.get())->getBullets())
+		{
+			for (auto& node : nodes_)
+			{
+				if (bullet.getGlobalBounds().intersects(node.getGlobalBounds()))
+					hitByEnemyBullet();
+			}
+		}
+	}
+}
+
+void Snake::hitByEnemyBullet()
+{
+	std::cout << "Player hit by enemy bullet" << std::endl;
 }
 
 void Snake::render(sf::RenderWindow& window)

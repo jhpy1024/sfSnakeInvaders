@@ -20,6 +20,8 @@ private:
 	void move(sf::Time delta);
 	void checkEdgeCollisions();
 	void checkBulletCollisions(std::vector<Bullet>::size_type bullet);
+	void checkEnemyBulletCollisions();
+	void hitByEnemyBullet();
 	void fireBullet();
 
 	bool hitTop() const;
