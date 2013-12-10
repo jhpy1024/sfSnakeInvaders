@@ -124,6 +124,7 @@ void Snake::checkBulletCollisions(std::vector<Bullet>::size_type bullet)
 		{
 			static_cast<Spaceship*>(spaceship.get())->hitByPlayerBullet();
 			bulletsToErase_.push_back(bullet);
+			grow();
 		}
 	}
 }
