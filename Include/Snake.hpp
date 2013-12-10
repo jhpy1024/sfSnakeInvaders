@@ -6,14 +6,14 @@
 #include "Bullet.hpp"
 
 class Game;
-class Snake
+class Snake : public Entity
 {
 public:
 	Snake(const sf::Vector2f& position, Game* game, unsigned initialSize = 5U);
 
-	void handleInput();
-	void update(sf::Time delta);
-	void render(sf::RenderWindow& window);
+	void handleInput() override;
+	void update(sf::Time delta) override;
+	void render(sf::RenderWindow& window) override;
 
 private:
 	void grow();

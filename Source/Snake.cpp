@@ -4,7 +4,8 @@
 #include "../Include/Game.hpp"
 
 Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
-: position_(position)
+: Entity(position, game, EntityType::Snake)
+, position_(position)
 , game_(game)
 , direction_(Direction::Up)
 , canShoot_(true)
