@@ -13,6 +13,8 @@ Animation::Animation(const std::string& textureName, const sf::Time& delay, unsi
 {
 	sprite_.setTexture(game->getTextureHolder().getTexture(textureName));
 	sprite_.setTextureRect(sf::IntRect(0, 0, frameSize.x, frameSize.y));
+	sprite_.setOrigin(sprite_.getLocalBounds().left + sprite_.getLocalBounds().width / 2.f,
+		sprite_.getLocalBounds().top + sprite_.getLocalBounds().height / 2.f);
 }
 
 void Animation::update()

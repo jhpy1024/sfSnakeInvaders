@@ -16,6 +16,7 @@ Spaceship::Spaceship(const sf::Vector2f& position, Game* game)
 , canShoot_(false)
 , BaseFireRate(sf::milliseconds(4000))
 , NumColors(4)
+, isDead_(false)
 {
 	sprite_.setTexture(game_->getTextureHolder().getTexture("spaceship"));
 	sprite_.setTextureRect(sf::IntRect(0, 0, Width, Height));
@@ -35,6 +36,16 @@ Spaceship::Spaceship(const sf::Vector2f& position, Game* game)
 		fireRate_ = -fireRate_;
 }
 
+bool Spaceship::isDead() const
+{
+	return isDead_;
+}
+
+void Spaceship::setDead(bool flag)
+{
+	isDead_ = flag;
+}
+
 std::vector<Bullet>& Spaceship::getBullets()
 {
 	return bullets_;
@@ -42,7 +53,7 @@ std::vector<Bullet>& Spaceship::getBullets()
 
 void Spaceship::hitByPlayerBullet()
 {
-	std::cout << "Ship hit by enemy bullet" << std::endl;
+	isDead_ = true;
 }
 
 void Spaceship::handleInput()

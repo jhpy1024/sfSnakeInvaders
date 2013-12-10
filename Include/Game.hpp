@@ -8,6 +8,7 @@
 
 #include "Snake.hpp"
 #include "TextureHolder.hpp"
+#include "Animation.hpp"
 
 class Game
 {
@@ -46,6 +47,7 @@ private:
 	const int ShipHorizontalSpacing;
 	const int ShipVerticalSpacing;
 	std::vector<std::unique_ptr<Entity>> spaceships_;
+	std::vector<std::vector<std::unique_ptr<Entity>>::size_type> shipsToRemove_;
 	int shipHorizontalDirection_;
 	int shipVerticalDirection_;
 	bool shipsMoveVertical_;
@@ -54,6 +56,9 @@ private:
 	sf::Sprite bgSprite_;
 
 	TextureHolder textures_;
+
+	std::vector<Animation> animations_;
+	std::vector<std::vector<Animation>::size_type> animsToRemove_;
 
 	Snake player_;
 };

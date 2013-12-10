@@ -21,6 +21,8 @@ public:
 	static const int Height;
 
 	void hitByPlayerBullet();
+	bool isDead() const;
+	void setDead(bool flag);
 	
 private:
 	void fireBullet();
@@ -44,6 +46,8 @@ private:
 	const sf::Time BaseFireRate;
 
 	static bool engineSeeded_;
+
+	bool isDead_;
 
 	const unsigned NumColors;
 };

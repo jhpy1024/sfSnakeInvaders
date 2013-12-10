@@ -1,6 +1,8 @@
 #include "../Include/Game.hpp"
 #include "../Include/Spaceship.hpp"
 
+#include <iostream>
+
 Game::Game()
 : Width(640)
 , Height(480)
@@ -25,6 +27,7 @@ Game::Game()
 	textures_.addTexture("spaceship", "Assets/spaceship.png");
 	textures_.addTexture("background", "Assets/stars.png");
 	textures_.addTexture("enemyBullets", "Assets/enemyBullets.png");
+	textures_.addTexture("explosion", "Assets/explosion.png");
 
 	textures_.getTexture("background").setRepeated(true);
 	bgSprite_.setTexture(textures_.getTexture("background"));
@@ -59,6 +62,21 @@ void Game::handleInput()
 void Game::update(sf::Time delta)
 {
 	player_.update(delta);
+
+	for (auto it = animations_.begin(); it != animations_.end(); ++it)
+	{
+		if (it->isFinished())
+		{
+			animsToRemove_.push_back(std::distance(animations_.begin(), it));
+		}
+	}
+
+	for (auto index : animsToRemove_)
+	{
+		if (index != animsToRemove_.size() - 1)
+			animations_.erase(animations_.begin() + index);
+	}
+	animsToRemove_.clear();
 
 	updateShips(delta);
 }
@@ -102,12 +120,30 @@ void Game::updateShips(sf::Time delta)
 		shipVerticalDirection_ = 1;
 	}
 
-	for (auto& ship : spaceships_)
+	for (auto it = spaceships_.begin(); it != spaceships_.end(); ++it)
 	{
-		ship->move({ ShipSpeed * shipHorizontalDirection_ * delta.asSeconds(),
+		if (static_cast<Spaceship*>(it->get())->isDead())
+		{
+			Animation explosion("explosion", sf::milliseconds(10), 8, 8, { 128, 128 }, this);
+			explosion.setPosition({ (*it)->getPosition().x + (*it)->getLocalBounds().width / 2.f, 
+				(*it)->getPosition().y });
+			animations_.push_back(explosion);
+			static_cast<Spaceship*>(it->get())->setDead(false);
+		}
+
+		(*it)->move({ ShipSpeed * shipHorizontalDirection_ * delta.asSeconds(),
 			(shipsMoveVertical_ ? ShipSpeed * shipVerticalDirection_ * delta.asSeconds() : 0.f) });
-		ship->update(delta);
+		(*it)->update(delta);
 	}
+
+	for (auto ship : shipsToRemove_)
+	{
+		if (ship != spaceships_.size())
+		{
+			spaceships_.erase(spaceships_.begin() + ship);
+		}
+	}
+	shipsToRemove_.clear();
 }
 
 void Game::render()
@@ -117,6 +153,8 @@ void Game::render()
 
 	for (auto& ship : spaceships_)
 		ship->render(window_);
+	for (auto& anim : animations_)
+		anim.render(window_);
 
 	player_.render(window_);
 
