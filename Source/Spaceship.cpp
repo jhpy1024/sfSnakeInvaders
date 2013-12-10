@@ -47,7 +47,7 @@ void Spaceship::update(sf::Time delta)
 		currentFrame_ = (currentFrame_ + 1) % NumFrames;
 		lastAnimTime_ = animationClock_.getElapsedTime();
 		
-		sprite_.setTextureRect(sf::IntRect(currentFrame_ * Width, 0, Width, Height));
+		sprite_.setTextureRect(sf::IntRect(currentFrame_ * Width, sprite_.getTextureRect().top, Width, Height));
 	}
 
 	for (auto it = bullets_.begin(); it != bullets_.end(); ++it)
@@ -69,6 +69,9 @@ void Spaceship::update(sf::Time delta)
 
 	if (canShoot_ && shouldShoot())
 		fireBullet();
+
+	if (fireClock_.getElapsedTime() - lastFireTime_ >= sf::seconds(0.3f))
+		sprite_.setTextureRect(sf::IntRect(currentFrame_ * Width, 0, Width, Height));
 }
 
 bool Spaceship::shouldShoot() const
@@ -93,6 +96,7 @@ void Spaceship::fireBullet()
 		game_, Bullet::Direction::Down, "enemyBullets"));
 	bullets_.back().setTextureRect(randomBulletColor());
 	lastFireTime_ = fireClock_.getElapsedTime();
+	sprite_.setTextureRect(sf::IntRect(sprite_.getTextureRect().left, Height, Width, Height));
 }
 
 void Spaceship::render(sf::RenderWindow& window)
