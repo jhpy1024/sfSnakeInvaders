@@ -3,6 +3,7 @@
 
 #include "../Include/Snake.hpp"
 #include "../Include/Game.hpp"
+#include "../Include/GameScreen.hpp"
 #include "../Include/Spaceship.hpp"
 
 Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
@@ -96,7 +97,7 @@ bool Snake::isDead() const
 
 void Snake::checkEnemyBulletCollisions()
 {
-	for (auto& spaceship : game_->getSpaceships())
+	for (auto& spaceship : static_cast<GameScreen*>(game_->getScreens().top().get())->getSpaceships())
 	{
 		for (auto& bullet : static_cast<Spaceship*>(spaceship.get())->getBullets())
 		{
@@ -128,7 +129,7 @@ void Snake::render(sf::RenderWindow& window)
 
 void Snake::checkBulletCollisions(std::vector<Bullet>::size_type bullet)
 {
-	for (auto& spaceship : game_->getSpaceships())
+	for (auto& spaceship : static_cast<GameScreen*>(game_->getScreens().top().get())->getSpaceships())
 	{
 		if (bullets_[bullet].getGlobalBounds().intersects(spaceship->getGlobalBounds()))
 		{

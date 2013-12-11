@@ -5,10 +5,12 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <stack>
 
 #include "Snake.hpp"
 #include "TextureHolder.hpp"
 #include "Animation.hpp"
+#include "Screen.hpp"
 
 class Game
 {
@@ -24,33 +26,19 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 	sf::Time getFps() const;
-	std::vector<std::unique_ptr<Entity>>& getSpaceships();
+	
+
+	std::stack<std::unique_ptr<Screen>>& getScreens();
 
 	TextureHolder& getTextureHolder();
-
-private:
-	void updateShips(sf::Time delta);
 
 private:
 	const int Width;
 	const int Height;
 	const std::string Title;
 	const sf::Time TimePerFrame;
-
-	const unsigned NumShipRows;
-	const unsigned NumShipColumns;
-	const int ShipHorizontalSpacing;
-	const int ShipVerticalSpacing;
-	std::vector<std::unique_ptr<Entity>> spaceships_;
-	std::vector<std::vector<std::unique_ptr<Entity>>::size_type> shipsToRemove_;
-
 	sf::RenderWindow window_;
-	sf::Sprite bgSprite_;
+	std::stack<std::unique_ptr<Screen>> screens_;
 
 	TextureHolder textures_;
-
-	std::vector<Animation> animations_;
-	std::vector<std::vector<Animation>::size_type> animsToRemove_;
-
-	Snake player_;
 };

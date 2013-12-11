@@ -1,5 +1,5 @@
 #include "../Include/Game.hpp"
-#include "../Include/Spaceship.hpp"
+#include "../Include/GameScreen.hpp"
 
 #include <iostream>
 
@@ -8,12 +8,7 @@ Game::Game()
 , Height(480)
 , Title("SnakeInvaders!")
 , TimePerFrame(sf::seconds(1.f / 30.f))
-, NumShipRows(3)
-, NumShipColumns(5)
-, ShipHorizontalSpacing(30)
-, ShipVerticalSpacing(10)
 , window_(sf::VideoMode(Width, Height), Title, sf::Style::Close)
-, player_({ Width / 2.f, Height / 2.f }, this)
 {
 	textures_.addTexture("bullets", "Assets/bullets.png");
 	textures_.addTexture("spaceship", "Assets/spaceship.png");
@@ -21,21 +16,12 @@ Game::Game()
 	textures_.addTexture("enemyBullets", "Assets/enemyBullets.png");
 	textures_.addTexture("explosion", "Assets/explosion.png");
 
-	textures_.getTexture("background").setRepeated(true);
-	bgSprite_.setTexture(textures_.getTexture("background"));
-	bgSprite_.setPosition(0.f, 0.f);
-	bgSprite_.setTextureRect(sf::IntRect(0, 0, Width, Height));
+	screens_.push(std::unique_ptr<Screen>(new GameScreen(this)));
+}
 
-	for (unsigned y = 0; y < NumShipRows; ++y)
-	{
-		for (unsigned x = 1; x < NumShipColumns + 1; ++x)
-		{
-			spaceships_.push_back(std::unique_ptr<Entity>(
-				new Spaceship({ static_cast<float>((Spaceship::Width + ShipHorizontalSpacing) * x),
-				static_cast<float>((Spaceship::Height + ShipVerticalSpacing) * y) }, this)));
-		}
-	}
-
+std::stack<std::unique_ptr<Screen>>& Game::getScreens()
+{
+	return screens_;
 }
 
 void Game::handleInput()
@@ -48,75 +34,24 @@ void Game::handleInput()
 			window_.close();
 	}
 
-	player_.handleInput();
+	if (!screens_.empty())
+		screens_.top()->handleInput();
 }
 
 void Game::update(sf::Time delta)
 {
-	player_.update(delta);
-
-	for (auto it = animations_.begin(); it != animations_.end(); ++it)
-	{
-		if (it->isFinished())
-		{
-			animsToRemove_.push_back(std::distance(animations_.begin(), it));
-		}
-	}
-
-	for (auto index : animsToRemove_)
-	{
-		if (index != animsToRemove_.size())
-			animations_.erase(animations_.begin() + index);
-	}
-	animsToRemove_.clear();
-
-	updateShips(delta);
-}
-
-void Game::updateShips(sf::Time delta)
-{
-	for (auto it = spaceships_.begin(); it != spaceships_.end(); ++it)
-	{
-		if (static_cast<Spaceship*>(it->get())->isDead())
-		{
-			Animation explosion("explosion", sf::milliseconds(10), 8, 8, { 128, 128 }, this);
-			explosion.setPosition({ (*it)->getPosition().x + (*it)->getLocalBounds().width / 2.f, 
-				(*it)->getPosition().y });
-			animations_.push_back(explosion);
-			shipsToRemove_.push_back(std::distance(spaceships_.begin(), it));
-		}
-
-		(*it)->update(delta);
-	}
-
-	for (auto ship : shipsToRemove_)
-	{
-		if (ship != spaceships_.size())
-		{
-			spaceships_.erase(spaceships_.begin() + ship);
-		}
-	}
-	shipsToRemove_.clear();
+	if (!screens_.empty())
+		screens_.top()->update(delta);
 }
 
 void Game::render()
 {
 	window_.clear();
-	window_.draw(bgSprite_);
 
-	for (auto& ship : spaceships_)
-		ship->render(window_);
-	for (auto& anim : animations_)
-		anim.render(window_);
-
-	player_.render(window_);
+	if (!screens_.empty())
+		screens_.top()->render(window_);
 
 	window_.display();
-}
-
-std::vector<std::unique_ptr<Entity>>& Game::getSpaceships()
-{
-	return spaceships_;
 }
 
 void Game::run()
