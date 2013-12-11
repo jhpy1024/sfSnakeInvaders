@@ -15,13 +15,14 @@ public:
 	void update(sf::Time delta) override;
 	void render(sf::RenderWindow& window) override;
 
+	bool isDead() const;
+
 private:
 	void grow();
 	void move(sf::Time delta);
 	void checkEdgeCollisions();
 	void checkBulletCollisions(std::vector<Bullet>::size_type bullet);
 	void checkEnemyBulletCollisions();
-	void hitByEnemyBullet();
 	void fireBullet();
 
 	bool hitTop() const;
@@ -36,6 +37,7 @@ private:
 	sf::Vector2f position_;
 
 	std::vector<SnakeNode> nodes_;
+	std::vector<std::vector<SnakeNode>::size_type> nodesToRemove_;
 	std::vector<Bullet> bullets_;
 	std::vector<std::vector<Bullet>::size_type> bulletsToErase_;
 		
@@ -43,6 +45,8 @@ private:
 	sf::Clock fireClock_;
 	sf::Time lastFireTime_;
 	const sf::Time FireRate;
+
+	bool dead_;
 
 	Game* game_;
 };

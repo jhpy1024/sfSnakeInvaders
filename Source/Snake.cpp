@@ -11,6 +11,7 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 , game_(game)
 , direction_(Direction::Up)
 , canShoot_(true)
+, dead_(false)
 , FireRate(sf::seconds(0.25f))
 {
 	// The initial size should never be zero.
@@ -88,24 +89,33 @@ void Snake::update(sf::Time delta)
 	canShoot_ = fireClock_.getElapsedTime() - lastFireTime_ >= FireRate;
 }
 
+bool Snake::isDead() const
+{
+	return dead_;
+}
+
 void Snake::checkEnemyBulletCollisions()
 {
 	for (auto& spaceship : game_->getSpaceships())
 	{
 		for (auto& bullet : static_cast<Spaceship*>(spaceship.get())->getBullets())
 		{
-			for (auto& node : nodes_)
+			for (auto it = nodes_.begin(); it != nodes_.end(); ++it)
 			{
-				if (bullet.getGlobalBounds().intersects(node.getGlobalBounds()))
-					hitByEnemyBullet();
+				if (it->getGlobalBounds().intersects(bullet.getGlobalBounds()))
+					nodesToRemove_.push_back(std::distance(nodes_.begin(), it));
 			}
+
+			if (nodes_.size() <= 1)
+				dead_ = true;
+
+			for (auto& node : nodesToRemove_)
+			{
+				nodes_.erase(nodes_.begin() + node);
+			}
+			nodesToRemove_.clear();
 		}
 	}
-}
-
-void Snake::hitByEnemyBullet()
-{
-	std::cout << "Player hit by enemy bullet" << std::endl;
 }
 
 void Snake::render(sf::RenderWindow& window)
