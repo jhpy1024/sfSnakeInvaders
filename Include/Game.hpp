@@ -39,18 +39,10 @@ private:
 
 	const unsigned NumShipRows;
 	const unsigned NumShipColumns;
-	const float ShipSpeed;
-	const int LeftShipPadding;
-	const int RightShipPadding;
-	const int TopShipPadding;
-	const int BottomShipPadding;
 	const int ShipHorizontalSpacing;
 	const int ShipVerticalSpacing;
 	std::vector<std::unique_ptr<Entity>> spaceships_;
 	std::vector<std::vector<std::unique_ptr<Entity>>::size_type> shipsToRemove_;
-	int shipHorizontalDirection_;
-	int shipVerticalDirection_;
-	bool shipsMoveVertical_;
 
 	sf::RenderWindow window_;
 	sf::Sprite bgSprite_;

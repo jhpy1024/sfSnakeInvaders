@@ -27,6 +27,10 @@ public:
 private:
 	void fireBullet();
 	bool shouldShoot() const;
+	void updateAnimation();
+	void updateBullets(sf::Time delta);
+	void updateShooting();
+	void updateMovement(sf::Time delta);
 	sf::IntRect randomBulletColor() const;
 
 private:
@@ -36,6 +40,14 @@ private:
 	const sf::Time AnimationDelay;
 	sf::Clock animationClock_;
 	sf::Time lastAnimTime_;
+
+	sf::Vector2f startPos_;
+	const float HorizontalDistance;
+	const float VerticalDistance;
+	int horizontalDirection_;
+	int verticalDirection_;
+	bool moveVertical_;
+	const float Speed;
 
 	std::vector<Bullet> bullets_;
 	std::vector<std::vector<Bullet>::iterator> bulletsToErase_;

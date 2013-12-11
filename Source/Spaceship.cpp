@@ -12,6 +12,13 @@ Spaceship::Spaceship(const sf::Vector2f& position, Game* game)
 : Entity(position, game, EntityType::Spaceship)
 , NumFrames(12)
 , AnimationDelay(sf::milliseconds(5))
+, startPos_(position)
+, VerticalDistance(100)
+, HorizontalDistance(100)
+, horizontalDirection_(1)
+, verticalDirection_(0)
+, moveVertical_(false)
+, Speed(125.f)
 , currentFrame_(0)
 , canShoot_(false)
 , BaseFireRate(sf::milliseconds(4000))
@@ -61,16 +68,19 @@ void Spaceship::handleInput()
 
 }
 
-void Spaceship::update(sf::Time delta)
+void Spaceship::updateAnimation()
 {
 	if (animationClock_.getElapsedTime() - lastAnimTime_ >= AnimationDelay)
 	{
 		currentFrame_ = (currentFrame_ + 1) % NumFrames;
 		lastAnimTime_ = animationClock_.getElapsedTime();
-		
+
 		sprite_.setTextureRect(sf::IntRect(currentFrame_ * Width, sprite_.getTextureRect().top, Width, Height));
 	}
+}
 
+void Spaceship::updateBullets(sf::Time delta)
+{
 	for (auto it = bullets_.begin(); it != bullets_.end(); ++it)
 	{
 		if (it->outOfBounds())
@@ -85,7 +95,10 @@ void Spaceship::update(sf::Time delta)
 			bullets_.erase(it);
 	}
 	bulletsToErase_.clear();
+}
 
+void Spaceship::updateShooting()
+{
 	canShoot_ = fireClock_.getElapsedTime() - lastFireTime_ >= fireRate_;
 
 	if (canShoot_ && shouldShoot())
@@ -93,6 +106,49 @@ void Spaceship::update(sf::Time delta)
 
 	if (fireClock_.getElapsedTime() - lastFireTime_ >= sf::seconds(0.3f))
 		sprite_.setTextureRect(sf::IntRect(currentFrame_ * Width, 0, Width, Height));
+}
+
+void Spaceship::updateMovement(sf::Time delta)
+{
+	// If we are at the right, move down and then start moving left.
+	if (getPosition().x - startPos_.x >= HorizontalDistance)
+	{
+		horizontalDirection_ = -1;
+		moveVertical_ = true;
+	}
+
+	// If we are at the left, move down and then start moving right.
+	else if (getPosition().x <= startPos_.x)
+	{
+		horizontalDirection_ = 1;
+		moveVertical_ = true;
+	} 
+	else
+	{
+		moveVertical_ = false;
+	}
+
+	if (getPosition().y - startPos_.y >= VerticalDistance)
+	{
+		moveVertical_ = true;
+		verticalDirection_ = -1;
+	}
+	else if (getPosition().y <= startPos_.y)
+	{
+		moveVertical_ = true;
+		verticalDirection_ = 1;
+	}
+
+	sprite_.move({ Speed * horizontalDirection_ * delta.asSeconds(),
+		(moveVertical_ ? Speed * verticalDirection_ * delta.asSeconds() : 0.f) });
+}
+
+void Spaceship::update(sf::Time delta)
+{
+	updateAnimation();
+	updateBullets(delta);
+	updateShooting();
+	updateMovement(delta);
 }
 
 bool Spaceship::shouldShoot() const

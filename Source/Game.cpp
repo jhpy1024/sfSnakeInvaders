@@ -10,16 +10,8 @@ Game::Game()
 , TimePerFrame(sf::seconds(1.f / 30.f))
 , NumShipRows(3)
 , NumShipColumns(5)
-, ShipSpeed(125.f)
-, LeftShipPadding(30)
-, RightShipPadding(500)
-, TopShipPadding(10)
-, BottomShipPadding(Height / 2)
 , ShipHorizontalSpacing(30)
 , ShipVerticalSpacing(10)
-, shipHorizontalDirection_(1) // 1 == right, -1 == left
-, shipVerticalDirection_(1) // 1 == down, -1 == up
-, shipsMoveVertical_(false)
 , window_(sf::VideoMode(Width, Height), Title, sf::Style::Close)
 , player_({ Width / 2.f, Height / 2.f }, this)
 {
@@ -83,43 +75,6 @@ void Game::update(sf::Time delta)
 
 void Game::updateShips(sf::Time delta)
 {
-	// If the rightmost ship is near the right edge of the screen, flip the direction
-	// of the ships and move them down.
-	if (spaceships_[NumShipColumns]->getPosition().x >= Width - RightShipPadding)
-	{
-		shipHorizontalDirection_ = -1;
-		shipsMoveVertical_ = true;
-	}
-
-	// If the leftmost ship is near the left edge of the screen, flip the direction
-	// of the ships and move them down.
-	else if (spaceships_[0]->getPosition().x <= LeftShipPadding)
-	{
-		shipHorizontalDirection_ = 1;
-		shipsMoveVertical_ = true;
-	}
-
-	// The ships aren't at an edge, don't move down.
-	else
-	{
-		shipsMoveVertical_ = false;
-	}
-
-	// If the bottommost ship is at the center of the screen, start moving
-	// back upwards.
-	if (spaceships_[NumShipColumns * NumShipRows - 1]->getPosition().y >= BottomShipPadding)
-	{
-		shipsMoveVertical_ = true;
-		shipVerticalDirection_ = -1;
-	}
-
-	// If the topmost ship is near the top of the screen, start moving downwards.
-	else if (spaceships_[0]->getPosition().y <= TopShipPadding)
-	{
-		shipsMoveVertical_ = true;
-		shipVerticalDirection_ = 1;
-	}
-
 	for (auto it = spaceships_.begin(); it != spaceships_.end(); ++it)
 	{
 		if (static_cast<Spaceship*>(it->get())->isDead())
@@ -131,8 +86,6 @@ void Game::updateShips(sf::Time delta)
 			static_cast<Spaceship*>(it->get())->setDead(false);
 		}
 
-		(*it)->move({ ShipSpeed * shipHorizontalDirection_ * delta.asSeconds(),
-			(shipsMoveVertical_ ? ShipSpeed * shipVerticalDirection_ * delta.asSeconds() : 0.f) });
 		(*it)->update(delta);
 	}
 
