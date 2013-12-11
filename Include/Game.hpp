@@ -4,12 +4,9 @@
 
 #include <string>
 #include <memory>
-#include <vector>
 #include <stack>
 
-#include "Snake.hpp"
 #include "TextureHolder.hpp"
-#include "Animation.hpp"
 #include "Screen.hpp"
 
 class Game
@@ -27,7 +24,6 @@ public:
 	int getHeight() const;
 	sf::Time getFps() const;
 	
-
 	std::stack<std::unique_ptr<Screen>>& getScreens();
 
 	TextureHolder& getTextureHolder();
