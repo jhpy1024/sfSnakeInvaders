@@ -65,7 +65,7 @@ void Game::update(sf::Time delta)
 
 	for (auto index : animsToRemove_)
 	{
-		if (index != animsToRemove_.size() - 1)
+		if (index != animsToRemove_.size())
 			animations_.erase(animations_.begin() + index);
 	}
 	animsToRemove_.clear();
@@ -83,7 +83,7 @@ void Game::updateShips(sf::Time delta)
 			explosion.setPosition({ (*it)->getPosition().x + (*it)->getLocalBounds().width / 2.f, 
 				(*it)->getPosition().y });
 			animations_.push_back(explosion);
-			static_cast<Spaceship*>(it->get())->setDead(false);
+			shipsToRemove_.push_back(std::distance(spaceships_.begin(), it));
 		}
 
 		(*it)->update(delta);
