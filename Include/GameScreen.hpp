@@ -34,6 +34,8 @@ private:
 	std::vector<std::vector<Animation>::size_type> animsToRemove_;
 
 	sf::Sprite bgSprite_;
+	sf::RectangleShape lifeBar_;
+	float lifeBarScale_;
 
 	Snake player_;
 };

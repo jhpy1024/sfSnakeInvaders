@@ -10,6 +10,7 @@ GameScreen::GameScreen(Game* game)
 , ShipHorizontalSpacing(30)
 , ShipVerticalSpacing(10)
 , player_({ game->getWidth() / 2.f, game->getHeight() / 2.f }, game)
+, lifeBarScale_(6.4f) // Window width divided by player life (640 / 100)
 {
 	game->getTextureHolder().getTexture("background").setRepeated(true);
 	bgSprite_.setTexture(game->getTextureHolder().getTexture("background"));
@@ -26,6 +27,9 @@ GameScreen::GameScreen(Game* game)
 		}
 	}
 
+	lifeBar_.setSize({ static_cast<float>(player_.getLife()) * lifeBarScale_, 20.f });
+	lifeBar_.setPosition(0, game_->getHeight() - lifeBar_.getSize().y);
+	lifeBar_.setFillColor(sf::Color::Green);
 }
 
 void GameScreen::handleInput()
@@ -42,6 +46,7 @@ void GameScreen::update(sf::Time delta)
 	}
 
 	player_.update(delta);
+	lifeBar_.setSize({ player_.getLife() * lifeBarScale_, lifeBar_.getSize().y });
 
 	for (auto it = animations_.begin(); it != animations_.end(); ++it)
 	{
@@ -95,6 +100,7 @@ std::vector<std::unique_ptr<Entity>>& GameScreen::getSpaceships()
 void GameScreen::render(sf::RenderWindow& window)
 {
 	window.draw(bgSprite_);
+	window.draw(lifeBar_);
 
 	for (auto& ship : spaceships_)
 		ship->render(window);

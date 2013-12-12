@@ -15,6 +15,7 @@ public:
 	void update(sf::Time delta) override;
 	void render(sf::RenderWindow& window) override;
 
+	int getLife() const;
 	bool isDead() const;
 
 private:
@@ -48,6 +49,8 @@ private:
 
 	int life_;
 	int score_;
+	sf::Time lastTimeShot_;
+	const sf::Time TakeDamageDelay;
 
 	Game* game_;
 };

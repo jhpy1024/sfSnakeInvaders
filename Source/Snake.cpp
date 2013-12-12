@@ -15,6 +15,7 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 , life_(100)
 , score_(0)
 , FireRate(sf::seconds(0.25f))
+, TakeDamageDelay(sf::seconds(0.4f))
 {
 	// The initial size should never be zero.
 	assert(initialSize != 0);
@@ -38,6 +39,11 @@ void Snake::handleInput()
 		direction_ = Direction::Left;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		direction_ = Direction::Right;
+}
+
+int Snake::getLife() const
+{
+	return life_;
 }
 
 void Snake::fireBullet()
@@ -68,7 +74,7 @@ void Snake::fireBullet()
 
 void Snake::update(sf::Time delta)
 {
-	printf("Score\t-- %i\t\tLife\t-- %i\n", score_, life_);
+	printf("Life: %d\n", life_);
 
 	if (isDead())
 		return;
@@ -110,7 +116,9 @@ void Snake::checkEnemyBulletCollisions()
 			for (auto it = nodes_.begin(); it != nodes_.end(); ++it)
 			{
 				if (it->getGlobalBounds().intersects(bullet.getGlobalBounds()))
+				{
 					hitByBullet();
+				}
 			}
 		}
 	}
@@ -118,7 +126,11 @@ void Snake::checkEnemyBulletCollisions()
 
 void Snake::hitByBullet()
 {
-	life_ -= 10;
+	if (fireClock_.getElapsedTime() - lastTimeShot_ >= TakeDamageDelay)
+	{
+		life_ -= 10;
+		lastTimeShot_ = fireClock_.getElapsedTime();
+	}
 }
 
 void Snake::render(sf::RenderWindow& window)
