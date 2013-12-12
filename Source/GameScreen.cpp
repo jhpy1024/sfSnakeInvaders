@@ -36,7 +36,10 @@ void GameScreen::handleInput()
 void GameScreen::update(sf::Time delta)
 {
 	if (player_.isDead())
+	{
 		game_->getScreens().push(std::unique_ptr<Screen>(new GameOverScreen(game_)));
+
+	}
 
 	player_.update(delta);
 

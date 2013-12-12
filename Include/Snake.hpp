@@ -19,6 +19,7 @@ public:
 
 private:
 	void grow();
+	void hitByBullet();
 	void move(sf::Time delta);
 	void checkEdgeCollisions();
 	void checkBulletCollisions(std::vector<Bullet>::size_type bullet);
@@ -37,7 +38,6 @@ private:
 	sf::Vector2f position_;
 
 	std::vector<SnakeNode> nodes_;
-	std::vector<std::vector<SnakeNode>::size_type> nodesToRemove_;
 	std::vector<Bullet> bullets_;
 	std::vector<std::vector<Bullet>::size_type> bulletsToErase_;
 		
@@ -46,7 +46,7 @@ private:
 	sf::Time lastFireTime_;
 	const sf::Time FireRate;
 
-	bool dead_;
+	int life_;
 
 	Game* game_;
 };

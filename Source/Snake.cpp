@@ -12,7 +12,7 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 , game_(game)
 , direction_(Direction::Up)
 , canShoot_(true)
-, dead_(false)
+, life_(100)
 , FireRate(sf::seconds(0.25f))
 {
 	// The initial size should never be zero.
@@ -67,6 +67,9 @@ void Snake::fireBullet()
 
 void Snake::update(sf::Time delta)
 {
+	if (isDead())
+		return;
+
 	for (auto it = bullets_.begin(); it != bullets_.end(); ++it)
 	{
 		if (it->outOfBounds())
@@ -92,7 +95,7 @@ void Snake::update(sf::Time delta)
 
 bool Snake::isDead() const
 {
-	return dead_;
+	return life_ <= 0;
 }
 
 void Snake::checkEnemyBulletCollisions()
@@ -104,19 +107,16 @@ void Snake::checkEnemyBulletCollisions()
 			for (auto it = nodes_.begin(); it != nodes_.end(); ++it)
 			{
 				if (it->getGlobalBounds().intersects(bullet.getGlobalBounds()))
-					nodesToRemove_.push_back(std::distance(nodes_.begin(), it));
+					hitByBullet();
 			}
-
-			if (nodes_.size() <= 1)
-				dead_ = true;
-
-			for (auto& node : nodesToRemove_)
-			{
-				nodes_.erase(nodes_.begin() + node);
-			}
-			nodesToRemove_.clear();
 		}
 	}
+}
+
+void Snake::hitByBullet()
+{
+	life_ -= 10;
+	std::cout << "Life: " << life_ << std::endl;
 }
 
 void Snake::render(sf::RenderWindow& window)
