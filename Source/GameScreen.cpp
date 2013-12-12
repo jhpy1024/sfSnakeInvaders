@@ -1,4 +1,5 @@
 #include "../Include/GameScreen.hpp"
+#include "../Include/GameOverScreen.hpp"
 #include "../Include/Game.hpp"
 #include "../Include/Spaceship.hpp"
 
@@ -34,6 +35,9 @@ void GameScreen::handleInput()
 
 void GameScreen::update(sf::Time delta)
 {
+	if (player_.isDead())
+		game_->getScreens().push(std::unique_ptr<Screen>(new GameOverScreen(game_)));
+
 	player_.update(delta);
 
 	for (auto it = animations_.begin(); it != animations_.end(); ++it)

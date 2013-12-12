@@ -15,8 +15,22 @@ Game::Game()
 	textures_.addTexture("background", "Assets/stars.png");
 	textures_.addTexture("enemyBullets", "Assets/enemyBullets.png");
 	textures_.addTexture("explosion", "Assets/explosion.png");
+	textures_.addTexture("retryBtn", "Assets/retryBtn.png");
+	textures_.addTexture("quitBtn", "Assets/quitBtn.png");
+	textures_.addTexture("gameOverMsg", "Assets/gameOverMsg.png");
 
 	screens_.push(std::unique_ptr<Screen>(new GameScreen(this)));
+}
+
+void Game::quit()
+{
+	window_.close();
+	exit(0);
+}
+
+sf::RenderWindow& Game::getWindow()
+{
+	return window_;
 }
 
 std::stack<std::unique_ptr<Screen>>& Game::getScreens()

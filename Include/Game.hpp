@@ -20,11 +20,14 @@ public:
 	void update(sf::Time delta);
 	void render();
 
+	void quit();
+
 	int getWidth() const;
 	int getHeight() const;
 	sf::Time getFps() const;
 	
 	std::stack<std::unique_ptr<Screen>>& getScreens();
+	sf::RenderWindow& getWindow();
 
 	TextureHolder& getTextureHolder();
 
