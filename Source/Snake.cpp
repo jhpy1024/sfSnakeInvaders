@@ -13,6 +13,7 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 , direction_(Direction::Up)
 , canShoot_(true)
 , life_(100)
+, score_(0)
 , FireRate(sf::seconds(0.25f))
 {
 	// The initial size should never be zero.
@@ -67,6 +68,8 @@ void Snake::fireBullet()
 
 void Snake::update(sf::Time delta)
 {
+	printf("Score\t-- %i\t\tLife\t-- %i\n", score_, life_);
+
 	if (isDead())
 		return;
 
@@ -116,7 +119,6 @@ void Snake::checkEnemyBulletCollisions()
 void Snake::hitByBullet()
 {
 	life_ -= 10;
-	std::cout << "Life: " << life_ << std::endl;
 }
 
 void Snake::render(sf::RenderWindow& window)
@@ -136,6 +138,7 @@ void Snake::checkBulletCollisions(std::vector<Bullet>::size_type bullet)
 			static_cast<Spaceship*>(spaceship.get())->hitByPlayerBullet();
 			bulletsToErase_.push_back(bullet);
 			grow();
+			score_ += 10;
 		}
 	}
 }

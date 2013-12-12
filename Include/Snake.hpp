@@ -47,6 +47,7 @@ private:
 	const sf::Time FireRate;
 
 	int life_;
+	int score_;
 
 	Game* game_;
 };
