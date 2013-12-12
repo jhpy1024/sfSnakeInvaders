@@ -16,7 +16,7 @@ Game::Game()
 	textures_.addTexture("enemyBullets", "Assets/enemyBullets.png");
 	textures_.addTexture("explosion", "Assets/explosion.png");
 
-	screens_.push(std::unique_ptr<Screen>(new GameScreen(this)));
+	//screens_.push(std::unique_ptr<Screen>(new GameScreen(this)));
 }
 
 std::stack<std::unique_ptr<Screen>>& Game::getScreens()
@@ -34,14 +34,16 @@ void Game::handleInput()
 			window_.close();
 	}
 
-	if (!screens_.empty())
-		screens_.top()->handleInput();
+	if (screens_.empty())
+		std::cerr << "[handleInput()] Screen stack is empty" << std::endl;
+	screens_.top()->handleInput();
 }
 
 void Game::update(sf::Time delta)
 {
 	if (!screens_.empty())
-		screens_.top()->update(delta);
+		std::cerr << "[update()] Screen stack is empty" << std::endl;
+	screens_.top()->update(delta);
 }
 
 void Game::render()
@@ -49,8 +51,8 @@ void Game::render()
 	window_.clear();
 
 	if (!screens_.empty())
-		screens_.top()->render(window_);
-
+		std::cerr << "[render()] Screen stack is empty" << std::endl;
+	screens_.top()->render(window_);
 	window_.display();
 }
 
