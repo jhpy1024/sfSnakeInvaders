@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Thor/Particles/ParticleSystem.hpp>
+#include <Thor/Particles/Emitters.hpp>
+
 #include <memory>
 
 #include "SnakeNode.hpp"
@@ -20,7 +23,7 @@ public:
 
 private:
 	void grow();
-	void hitByBullet();
+	void hitByBullet(std::vector<SnakeNode>::iterator nodeHit);
 	void move(sf::Time delta);
 	void checkEdgeCollisions();
 	void checkBulletCollisions(std::vector<Bullet>::size_type bullet);
@@ -31,6 +34,8 @@ private:
 	bool hitBottom() const;
 	bool hitLeft() const;
 	bool hitRight() const;
+
+	thor::UniversalEmitter createEmitter(const sf::Vector2f& position);
 
 private:
 	enum class Direction { Left, Right, Up, Down };
@@ -53,4 +58,7 @@ private:
 	const sf::Time TakeDamageDelay;
 
 	Game* game_;
+
+	thor::ParticleSystem particleSystem_;
+	sf::Clock particleClock_;
 };

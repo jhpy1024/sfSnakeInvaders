@@ -18,6 +18,7 @@ Game::Game()
 	textures_.addTexture("retryBtn", "Assets/retryBtn.png");
 	textures_.addTexture("quitBtn", "Assets/quitBtn.png");
 	textures_.addTexture("gameOverMsg", "Assets/gameOverMsg.png");
+	textures_.addTexture("particle", "Assets/particle.png");
 
 	screens_.push(std::unique_ptr<Screen>(new GameScreen(this)));
 }

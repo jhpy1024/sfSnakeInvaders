@@ -1,6 +1,12 @@
 #include <cassert>
 #include <iostream>
 
+#include <Thor/Math/Distributions.hpp>
+#include <Thor/Graphics/ColorGradient.hpp>
+#include <Thor/Animation.hpp>
+#include <Thor/Particles.hpp>
+#include <Thor/Time.hpp>
+
 #include "../Include/Snake.hpp"
 #include "../Include/Game.hpp"
 #include "../Include/GameScreen.hpp"
@@ -12,7 +18,7 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 , game_(game)
 , direction_(Direction::Up)
 , canShoot_(true)
-, life_(100)
+, life_(100)	
 , score_(0)
 , FireRate(sf::seconds(0.25f))
 , TakeDamageDelay(sf::seconds(0.4f))
@@ -21,9 +27,36 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 	assert(initialSize != 0);
 
 	for (unsigned i = 0; i < initialSize; ++i)
-	{
+	{	
 		nodes_.push_back(SnakeNode({ position.x, position.y + SnakeNode::Size * i }, (i == 0 ? true : false)));
 	}
+
+	srand(time(NULL));
+
+	particleSystem_.setTexture(game_->getTextureHolder().getTexture("particle"));
+	thor::ColorGradient gradient;
+	gradient[0.f] = sf::Color::Green;
+	gradient[0.5f] = sf::Color::Red;
+	gradient[1.f] = sf::Color::Black;
+	thor::ColorAnimation colorizer(gradient);
+	thor::FadeAnimation fader(0.1f, 0.1f);
+
+	particleSystem_.addAffector(thor::AnimationAffector(colorizer));
+	particleSystem_.addAffector(thor::AnimationAffector(fader));
+
+}
+
+thor::UniversalEmitter Snake::createEmitter(const sf::Vector2f& position)
+{
+	thor::UniversalEmitter emitter;
+
+	emitter.setEmissionRate(300.f);
+	emitter.setParticleLifetime(sf::seconds(1.f));
+	emitter.setParticlePosition(thor::Distributions::circle({ position.x, position.y }, 30.f));
+	emitter.setParticleRotation(thor::Distributions::uniform(0.f, 360.f));
+	emitter.setParticleVelocity(thor::Distributions::deflect({ float(rand() % 360), float(rand() % 360) }, 360));
+
+	return emitter;
 }
 
 void Snake::handleInput()
@@ -76,7 +109,7 @@ void Snake::update(sf::Time delta)
 {
 	printf("Life: %d\n", life_);
 
-	if (isDead())
+	if (life_ <= 0)
 		return;
 
 	for (auto it = bullets_.begin(); it != bullets_.end(); ++it)
@@ -100,6 +133,8 @@ void Snake::update(sf::Time delta)
 	move(delta);
 
 	canShoot_ = fireClock_.getElapsedTime() - lastFireTime_ >= FireRate;
+
+	particleSystem_.update(delta);
 }
 
 bool Snake::isDead() const
@@ -117,19 +152,20 @@ void Snake::checkEnemyBulletCollisions()
 			{
 				if (it->getGlobalBounds().intersects(bullet.getGlobalBounds()))
 				{
-					hitByBullet();
+					hitByBullet(it);
 				}
 			}
 		}
 	}
 }
 
-void Snake::hitByBullet()
+void Snake::hitByBullet(std::vector<SnakeNode>::iterator nodeHit)
 {
 	if (fireClock_.getElapsedTime() - lastTimeShot_ >= TakeDamageDelay)
 	{
 		life_ -= 10;
 		lastTimeShot_ = fireClock_.getElapsedTime();
+		particleSystem_.addEmitter(createEmitter(nodeHit->getPosition()), sf::milliseconds(200));
 	}
 }
 
@@ -139,6 +175,8 @@ void Snake::render(sf::RenderWindow& window)
 		bullet.render(window);
 	for (auto& node : nodes_)
 		node.render(window);
+
+	window.draw(particleSystem_);
 }
 
 void Snake::checkBulletCollisions(std::vector<Bullet>::size_type bullet)
