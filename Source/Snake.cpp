@@ -54,7 +54,9 @@ thor::UniversalEmitter Snake::createEmitter(const sf::Vector2f& position)
 	emitter.setParticleLifetime(sf::seconds(1.f));
 	emitter.setParticlePosition(thor::Distributions::circle({ position.x, position.y }, 30.f));
 	emitter.setParticleRotation(thor::Distributions::uniform(0.f, 360.f));
-	emitter.setParticleVelocity(thor::Distributions::deflect({ float(rand() % 360), float(rand() % 360) }, 360));
+	float xVel = rand() % 360 + 120;
+	float yVel = rand() % 360 + 120;
+	emitter.setParticleVelocity(thor::Distributions::deflect({ xVel, yVel }, 360));
 
 	return emitter;
 }
@@ -107,8 +109,6 @@ void Snake::fireBullet()
 
 void Snake::update(sf::Time delta)
 {
-	printf("Life: %d\n", life_);
-
 	if (life_ <= 0)
 		return;
 
