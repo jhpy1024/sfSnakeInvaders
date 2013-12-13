@@ -43,7 +43,6 @@ Snake::Snake(const sf::Vector2f& position, Game* game, unsigned initialSize)
 
 	particleSystem_.addAffector(thor::AnimationAffector(colorizer));
 	particleSystem_.addAffector(thor::AnimationAffector(fader));
-
 }
 
 thor::UniversalEmitter Snake::createEmitter(const sf::Vector2f& position)

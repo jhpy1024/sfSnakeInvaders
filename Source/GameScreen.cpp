@@ -1,5 +1,6 @@
 #include "../Include/GameScreen.hpp"
 #include "../Include/GameOverScreen.hpp"
+#include "../Include/WinScreen.hpp"
 #include "../Include/Game.hpp"
 #include "../Include/Spaceship.hpp"
 
@@ -68,6 +69,9 @@ void GameScreen::update(sf::Time delta)
 
 void GameScreen::updateShips(sf::Time delta)
 {
+	if (spaceships_.size() == 0)
+		game_->getScreens().push(std::unique_ptr<Screen>(new WinScreen(game_)));
+
 	for (auto it = spaceships_.begin(); it != spaceships_.end(); ++it)
 	{
 		if (static_cast<Spaceship*>(it->get())->isDead())
