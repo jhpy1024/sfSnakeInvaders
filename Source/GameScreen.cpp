@@ -1,3 +1,7 @@
+#include <Thor/Math/Distributions.hpp>
+#include <Thor/Graphics.hpp>
+#include <Thor/Animation.hpp>
+
 #include "../Include/GameScreen.hpp"
 #include "../Include/GameOverScreen.hpp"
 #include "../Include/WinScreen.hpp"
@@ -31,6 +35,32 @@ GameScreen::GameScreen(Game* game)
 	lifeBar_.setSize({ static_cast<float>(player_.getLife()) * lifeBarScale_, 20.f });
 	lifeBar_.setPosition(0, game_->getHeight() - lifeBar_.getSize().y);
 	lifeBar_.setFillColor(sf::Color::Green);
+
+	particleSystem_.setTexture(game_->getTextureHolder().getTexture("fireParticle"));
+	thor::ColorGradient gradient;
+	gradient[0.f] = sf::Color::Red;
+	gradient[0.3f] = sf::Color(165, 0, 0); // Orange
+	gradient[1.f] = sf::Color(255, 255, 0); // Yellow
+	thor::ColorAnimation colorizer(gradient);
+	thor::FadeAnimation fader(0.1f, 0.1f);
+
+	particleSystem_.addAffector(thor::AnimationAffector(colorizer));
+	particleSystem_.addAffector(thor::AnimationAffector(fader));
+}
+
+thor::UniversalEmitter GameScreen::createEmitter(const sf::Vector2f& position)
+{
+	thor::UniversalEmitter emitter;
+
+	emitter.setEmissionRate(10000.f);
+	emitter.setParticleLifetime(sf::seconds(1.f));
+	emitter.setParticlePosition(thor::Distributions::circle({ position.x, position.y }, 15.f));
+	emitter.setParticleRotation(thor::Distributions::uniform(0.f, 360.f));
+	float xVel = rand() % 100 + 10;
+	float yVel = rand() % 100 + 10;
+	emitter.setParticleVelocity(thor::Distributions::deflect({ xVel, yVel }, 360));
+
+	return emitter;
 }
 
 void GameScreen::handleInput()
@@ -65,6 +95,7 @@ void GameScreen::update(sf::Time delta)
 	animsToRemove_.clear();
 
 	updateShips(delta);
+	particleSystem_.update(delta);
 }
 
 void GameScreen::updateShips(sf::Time delta)
@@ -80,6 +111,9 @@ void GameScreen::updateShips(sf::Time delta)
 			explosion.setPosition({ (*it)->getPosition().x + (*it)->getLocalBounds().width / 2.f,
 				(*it)->getPosition().y });
 			animations_.push_back(explosion);
+			sf::Vector2f particlePos = { (*it)->getPosition().x + (*it)->getGlobalBounds().width / 2.f,
+				(*it)->getPosition().y + (*it)->getGlobalBounds().height / 2.f };
+			particleSystem_.addEmitter(createEmitter(particlePos), sf::milliseconds(200));
 			shipsToRemove_.push_back(std::distance(spaceships_.begin(), it));
 		}
 
@@ -112,4 +146,5 @@ void GameScreen::render(sf::RenderWindow& window)
 		anim.render(window);
 
 	player_.render(window);
+	window.draw(particleSystem_);
 }

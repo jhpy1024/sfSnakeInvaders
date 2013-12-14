@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <Thor/Particles.hpp>
+
 #include "Screen.hpp"
 #include "Entity.hpp"
 #include "Animation.hpp"
@@ -21,6 +23,7 @@ public:
 
 private:
 	void updateShips(sf::Time delta);
+	thor::UniversalEmitter createEmitter(const sf::Vector2f& position);
 
 private:
 	const unsigned NumShipRows;
@@ -38,4 +41,6 @@ private:
 	float lifeBarScale_;
 
 	Snake player_;
+
+	thor::ParticleSystem particleSystem_;
 };

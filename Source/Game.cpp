@@ -20,6 +20,7 @@ Game::Game()
 	textures_.addTexture("gameOverMsg", "Assets/gameOverMsg.png");
 	textures_.addTexture("winMsg", "Assets/winMsg.png");
 	textures_.addTexture("particle", "Assets/particle.png");
+	textures_.addTexture("fireParticle", "Assets/fireParticle.png");
 
 	screens_.push(std::unique_ptr<Screen>(new GameScreen(this)));
 }
