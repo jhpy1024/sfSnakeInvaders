@@ -139,6 +139,7 @@ void GameScreen::render(sf::RenderWindow& window)
 {
 	window.draw(bgSprite_);
 	window.draw(lifeBar_);
+	window.draw(particleSystem_);
 
 	for (auto& ship : spaceships_)
 		ship->render(window);
@@ -146,5 +147,4 @@ void GameScreen::render(sf::RenderWindow& window)
 		anim.render(window);
 
 	player_.render(window);
-	window.draw(particleSystem_);
 }
