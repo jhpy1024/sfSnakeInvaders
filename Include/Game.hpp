@@ -7,6 +7,7 @@
 #include <stack>
 
 #include "TextureHolder.hpp"
+#include "AudioHolder.hpp"
 #include "Screen.hpp"
 
 class Game
@@ -30,6 +31,7 @@ public:
 	sf::RenderWindow& getWindow();
 
 	TextureHolder& getTextureHolder();
+	AudioHolder& getAudioHolder();
 
 private:
 	const int Width;
@@ -40,4 +42,5 @@ private:
 	std::stack<std::unique_ptr<Screen>> screens_;
 
 	TextureHolder textures_;
+	AudioHolder audio_;
 };

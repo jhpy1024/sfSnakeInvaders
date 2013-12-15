@@ -115,6 +115,8 @@ void GameScreen::updateShips(sf::Time delta)
 				(*it)->getPosition().y + (*it)->getGlobalBounds().height / 2.f };
 			particleSystem_.addEmitter(createEmitter(particlePos), sf::milliseconds(200));
 			shipsToRemove_.push_back(std::distance(spaceships_.begin(), it));
+
+			game_->getAudioHolder().playSound("explosion");
 		}
 
 		(*it)->update(delta);

@@ -22,7 +22,18 @@ Game::Game()
 	textures_.addTexture("particle", "Assets/particle.png");
 	textures_.addTexture("fireParticle", "Assets/fireParticle.png");
 
+	audio_.loadSound("explosion", "Assets/explosion.aiff");
+	audio_.loadMusic("bgMusic", "Assets/bgMusic.wav");
+
+	audio_.getMusic("bgMusic").setLoop(true);
+	audio_.playMusic("bgMusic");
+
 	screens_.push(std::unique_ptr<Screen>(new GameScreen(this)));
+}
+
+AudioHolder& Game::getAudioHolder()
+{
+	return audio_;
 }
 
 void Game::quit()
